@@ -2,7 +2,7 @@ import os
 import datetime
 import queue
 from functools import wraps
-from flask import Flask, request, jsonify, Response
+from flask import Flask, render_template,request, jsonify, Response
 from flask_cors import CORS
 from pymongo import MongoClient
 from bson.objectid import ObjectId
@@ -15,9 +15,14 @@ import certifi
 # Load environment variables
 load_dotenv()
 
-app = Flask(__name__)
+app = Flask(__name__) 
 CORS(app)
 
+#home
+@app.route('/')
+def home():
+    return render_template('index.html') 
+    
 # Configuration
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'super-secret-key-change-me')
 MONGO_URI = os.getenv('MONGO_URI', 'mongodb://localhost:27017/')
