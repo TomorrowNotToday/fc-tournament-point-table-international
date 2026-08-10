@@ -1,0 +1,7 @@
+flask
+flask-cors
+pymongo
+PyJWT
+python-dotenv
+flask-socketio
+bcrypt
