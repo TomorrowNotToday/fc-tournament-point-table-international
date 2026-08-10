@@ -1,6 +1,6 @@
 // API Configuration
-const API_URL = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
-    ? 'http://localhost:5000/api'
+const API_URL = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') 
+    ? 'http://localhost:5000/api' 
     : '/api';
 
 // State
@@ -19,22 +19,19 @@ const state = {
 
 // Extensive Country Code Mapping
 const countryCodes = {
-    'argentina': 'ar', 'france': 'fr', 'brazil': 'br', 'germany': 'de',
-    'spain': 'es', 'england': 'gb-eng', 'portugal': 'pt', 'italy': 'it',
-    'netherlands': 'nl', 'belgium': 'be', 'croatia': 'hr', 'uruguay': 'uy',
-    'usa': 'us', 'mexico': 'mx', 'japan': 'jp', 'south korea': 'kr',
-    'indonesia': 'id', 'saudi arabia': 'sa', 'australia': 'au', 'morocco': 'ma',
-    'colombia': 'co', 'switzerland': 'ch', 'senegal': 'sn', 'denmark': 'dk',
-    'poland': 'pl', 'serbia': 'rs', 'chile': 'cl', 'wales': 'gb-wls',
-    'scotland': 'gb-sct', 'sweden': 'se', 'nigeria': 'ng', 'egypt': 'eg',
-    'cameroon': 'cm', 'ghana': 'gh', 'ivory coast': 'ci', 'canada': 'ca',
-    'ecuador': 'ec', 'peru': 'pe', 'qatar': 'qa', 'iran': 'ir', 'iraq': 'iq',
-    'malaysia': 'my', 'thailand': 'th', 'vietnam': 'vn', 'philippines': 'ph',
-    'singapore': 'sg', 'turkey': 'tr', 'greece': 'gr', 'ukraine': 'ua',
-    'ireland': 'ie', 'norway': 'no', 'finland': 'fi', 'iceland': 'is',
-    'russia': 'ru', 'china': 'cn', 'india': 'in', 'south africa': 'za',
-    'romania': 'ro', 'czech republic': 'cz', 'czechia': 'cz', 'belarus': 'by',
-    'slovakia': 'sk', 'slovenia': 'si', 'austria': 'at', 'hungary': 'hu'
+    'argentina': 'ar', 'france': 'fr', 'brazil': 'br', 'germany': 'de', 'spain': 'es',
+    'england': 'gb-eng', 'portugal': 'pt', 'italy': 'it', 'netherlands': 'nl', 'belgium': 'be',
+    'croatia': 'hr', 'uruguay': 'uy', 'usa': 'us', 'mexico': 'mx', 'japan': 'jp',
+    'south korea': 'kr', 'indonesia': 'id', 'saudi arabia': 'sa', 'australia': 'au',
+    'morocco': 'ma', 'colombia': 'co', 'switzerland': 'ch', 'senegal': 'sn', 'denmark': 'dk',
+    'poland': 'pl', 'serbia': 'rs', 'chile': 'cl', 'wales': 'gb-wls', 'scotland': 'gb-sct',
+    'sweden': 'se', 'nigeria': 'ng', 'egypt': 'eg', 'cameroon': 'cm', 'ghana': 'gh',
+    'ivory coast': 'ci', 'canada': 'ca', 'ecuador': 'ec', 'peru': 'pe', 'qatar': 'qa',
+    'iran': 'ir', 'iraq': 'iq', 'malaysia': 'my', 'thailand': 'th', 'vietnam': 'vn',
+    'philippines': 'ph', 'singapore': 'sg', 'turkey': 'tr', 'greece': 'gr', 'ukraine': 'ua',
+    'ireland': 'ie', 'norway': 'no', 'finland': 'fi', 'iceland': 'is', 'russia': 'ru',
+    'china': 'cn', 'india': 'in', 'south africa': 'za', 'romania': 'ro', 'czech republic': 'cz',
+    'czechia': 'cz', 'belarus': 'by', 'slovakia': 'sk', 'slovenia': 'si', 'austria': 'at', 'hungary': 'hu'
 };
 
 const getFlagUrl = (code) => {
@@ -42,17 +39,13 @@ const getFlagUrl = (code) => {
     return `https://flagcdn.com/w160/${code.toLowerCase()}.png`;
 };
 
-// Try to auto-guess country code, if not found, use a fallback
 const getCountryCode = (name) => {
     const n = name.toLowerCase().trim();
     if (countryCodes[n]) return countryCodes[n];
-
-    // Partial matching fallback
     for (const [key, value] of Object.entries(countryCodes)) {
         if (n.includes(key) || key.includes(n)) return value;
     }
-
-    return null; // Will trigger placeholder
+    return null;
 };
 
 const app = {
@@ -62,18 +55,18 @@ const app = {
     showAlert(message) {
         return new Promise(resolve => {
             this.alertResolve = resolve;
-            document.getElementById('custom-alert-message').innerText = message;
+            const msgEl = document.getElementById('custom-alert-message');
+            if (msgEl) msgEl.innerText = message;
             const modal = document.getElementById('custom-alert-modal');
-            modal.classList.remove('hidden');
+            if (modal) modal.classList.remove('hidden');
             const okBtn = document.getElementById('custom-alert-ok-btn');
-            if (okBtn) {
-                setTimeout(() => okBtn.focus(), 50);
-            }
+            if (okBtn) setTimeout(() => okBtn.focus(), 50);
         });
     },
 
     closeAlert() {
-        document.getElementById('custom-alert-modal').classList.add('hidden');
+        const modal = document.getElementById('custom-alert-modal');
+        if (modal) modal.classList.add('hidden');
         if (this.alertResolve) {
             this.alertResolve();
             this.alertResolve = null;
@@ -83,13 +76,16 @@ const app = {
     showConfirm(message) {
         return new Promise(resolve => {
             this.confirmResolve = resolve;
-            document.getElementById('custom-confirm-message').innerText = message;
-            document.getElementById('custom-confirm-modal').classList.remove('hidden');
+            const msgEl = document.getElementById('custom-confirm-message');
+            if (msgEl) msgEl.innerText = message;
+            const modal = document.getElementById('custom-confirm-modal');
+            if (modal) modal.classList.remove('hidden');
         });
     },
 
     closeConfirm(result) {
-        document.getElementById('custom-confirm-modal').classList.add('hidden');
+        const modal = document.getElementById('custom-confirm-modal');
+        if (modal) modal.classList.add('hidden');
         if (this.confirmResolve) {
             this.confirmResolve(result);
             this.confirmResolve = null;
@@ -97,7 +93,6 @@ const app = {
     },
 
     async init() {
-        // Load persistent theme
         const savedTheme = localStorage.getItem('theme') || 'dark';
         document.documentElement.setAttribute('data-theme', savedTheme);
         const themeBtn = document.getElementById('theme-toggle-btn');
@@ -109,8 +104,6 @@ const app = {
         this.setupEventListeners();
         await this.fetchSettings();
         await this.fetchGroups();
-
-        // Start real-time updates via Server-Sent Events (SSE)
         this.setupRealtimeUpdates();
     },
 
@@ -126,28 +119,38 @@ const app = {
             state.role = role || 'admin';
 
             document.body.classList.add('admin-mode');
-            document.getElementById('admin-login-btn').classList.add('hidden');
+            const loginBtn = document.getElementById('admin-login-btn');
+            if (loginBtn) loginBtn.classList.add('hidden');
 
-            // Show avatar / profile controls
-            document.getElementById('admin-profile-container').classList.remove('hidden');
-            document.getElementById('profile-initial').innerText = username.charAt(0).toUpperCase();
-            document.getElementById('profile-initial-large').innerText = username.charAt(0).toUpperCase();
-            document.getElementById('dropdown-username').innerText = username;
-            document.getElementById('dropdown-role').innerText = state.role;
+            const profileContainer = document.getElementById('admin-profile-container');
+            if (profileContainer) profileContainer.classList.remove('hidden');
 
-            // Make competition name editable
+            const pInit = document.getElementById('profile-initial');
+            if (pInit) pInit.innerText = username.charAt(0).toUpperCase();
+
+            const pInitL = document.getElementById('profile-initial-large');
+            if (pInitL) pInitL.innerText = username.charAt(0).toUpperCase();
+
+            const dUser = document.getElementById('dropdown-username');
+            if (dUser) dUser.innerText = username;
+
+            const dRole = document.getElementById('dropdown-role');
+            if (dRole) dRole.innerText = state.role;
+
             const compDisplay = document.getElementById('competition-name-display');
             if (compDisplay) {
                 compDisplay.setAttribute('contenteditable', 'true');
                 compDisplay.classList.add('editable-comp-name');
             }
 
+            const mAdmins = document.getElementById('dropdown-manage-admins');
+            const vLogs = document.getElementById('dropdown-view-logs');
             if (state.role === 'superadmin') {
-                document.getElementById('dropdown-manage-admins').classList.remove('hidden');
-                document.getElementById('dropdown-view-logs').classList.remove('hidden');
+                if (mAdmins) mAdmins.classList.remove('hidden');
+                if (vLogs) vLogs.classList.remove('hidden');
             } else {
-                document.getElementById('dropdown-manage-admins').classList.add('hidden');
-                document.getElementById('dropdown-view-logs').classList.add('hidden');
+                if (mAdmins) mAdmins.classList.add('hidden');
+                if (vLogs) vLogs.classList.add('hidden');
             }
         } else {
             this.logoutState();
@@ -160,21 +163,17 @@ const app = {
     },
 
     setupEventListeners() {
-        // Auth / profile
-        document.getElementById('admin-login-btn').addEventListener('click', () => {
-            this.openModal('login-modal');
-        });
+        const loginBtn = document.getElementById('admin-login-btn');
+        if (loginBtn) loginBtn.addEventListener('click', () => this.openModal('login-modal'));
 
-        // Close dropdown when clicking outside
         window.addEventListener('click', (e) => {
             const container = document.getElementById('admin-profile-container');
             const dropdown = document.getElementById('profile-dropdown');
-            if (container && !container.contains(e.target) && !dropdown.classList.contains('hidden')) {
+            if (container && dropdown && !container.contains(e.target) && !dropdown.classList.contains('hidden')) {
                 dropdown.classList.add('hidden');
             }
         });
 
-        // Intercept Enter / Escape for Custom Alert Modal
         window.addEventListener('keydown', (e) => {
             const alertModal = document.getElementById('custom-alert-modal');
             if (alertModal && !alertModal.classList.contains('hidden')) {
@@ -186,7 +185,8 @@ const app = {
             }
         }, true);
 
-        document.getElementById('add-group-btn').addEventListener('click', () => this.openModal('add-group-modal'));
+        const addGrpBtn = document.getElementById('add-group-btn');
+        if (addGrpBtn) addGrpBtn.addEventListener('click', () => this.openModal('add-group-modal'));
 
         const compDisplay = document.getElementById('competition-name-display');
         if (compDisplay) {
@@ -201,34 +201,41 @@ const app = {
             });
         }
 
-        // Live score input listeners to save score on typing (real-time sync)
-        document.getElementById('edit-t1-score').addEventListener('input', () => this.saveMatchData());
-        document.getElementById('edit-t2-score').addEventListener('input', () => this.saveMatchData());
+        const t1Score = document.getElementById('edit-t1-score');
+        const t2Score = document.getElementById('edit-t2-score');
+        if (t1Score) t1Score.addEventListener('input', () => this.saveMatchData());
+        if (t2Score) t2Score.addEventListener('input', () => this.saveMatchData());
 
-        // Initialize TomSelects
-        this.tsGroup = new TomSelect('#group-selector', {
-            create: false,
-            placeholder: "Select Group...",
-            sortField: { field: "text", direction: "asc" },
-            onChange: (val) => this.onGroupSelected(val)
-        });
-        this.tsHome = new TomSelect('#home-team-selector', { create: false, placeholder: "Pilih Tim Home..." });
-        this.tsAway = new TomSelect('#away-team-selector', { create: false, placeholder: "Pilih Tim Away..." });
-
-        // Initialize TomSelect for History Sort
-        this.tsHistorySort = new TomSelect('#history-sort', {
-            create: false,
-            controlInput: null,
-            onChange: (val) => {
-                state.historySort = val;
-                this.renderHistory();
-            }
-        });
-
-        this.tsLogAction = new TomSelect('#log-action-filter', {
-            create: false,
-            onChange: () => this.filterLogs()
-        });
+        // TomSelect Elements
+        if (document.getElementById('group-selector')) {
+            this.tsGroup = new TomSelect('#group-selector', {
+                create: false,
+                placeholder: "Pilih Grup...",
+                onChange: (val) => this.onGroupSelected(val)
+            });
+        }
+        if (document.getElementById('home-team-selector')) {
+            this.tsHome = new TomSelect('#home-team-selector', { create: false, placeholder: "Pilih Tim Home..." });
+        }
+        if (document.getElementById('away-team-selector')) {
+            this.tsAway = new TomSelect('#away-team-selector', { create: false, placeholder: "Pilih Tim Away..." });
+        }
+        if (document.getElementById('history-sort')) {
+            this.tsHistorySort = new TomSelect('#history-sort', {
+                create: false,
+                controlInput: null,
+                onChange: (val) => {
+                    state.historySort = val;
+                    this.renderHistory();
+                }
+            });
+        }
+        if (document.getElementById('log-action-filter')) {
+            this.tsLogAction = new TomSelect('#log-action-filter', {
+                create: false,
+                onChange: () => this.filterLogs()
+            });
+        }
     },
 
     getHeaders() {
@@ -239,16 +246,20 @@ const app = {
     },
 
     openModal(id) {
-        document.getElementById(id).classList.remove('hidden');
+        const m = document.getElementById(id);
+        if (m) m.classList.remove('hidden');
     },
 
     closeModal(id) {
-        document.getElementById(id).classList.add('hidden');
-        // Clear forms if necessary
+        const m = document.getElementById(id);
+        if (m) m.classList.add('hidden');
         if (id === 'login-modal') {
-            document.getElementById('admin-username').value = '';
-            document.getElementById('admin-password').value = '';
-            document.getElementById('login-error').classList.add('hidden');
+            const u = document.getElementById('admin-username');
+            const p = document.getElementById('admin-password');
+            const err = document.getElementById('login-error');
+            if (u) u.value = '';
+            if (p) p.value = '';
+            if (err) err.classList.add('hidden');
         }
     },
 
@@ -276,13 +287,12 @@ const app = {
 
     toggleProfileDropdown() {
         const dropdown = document.getElementById('profile-dropdown');
-        dropdown.classList.toggle('hidden');
+        if (dropdown) dropdown.classList.toggle('hidden');
     },
 
     async login() {
         const usr = document.getElementById('admin-username').value;
         const pwd = document.getElementById('admin-password').value;
-
         try {
             const res = await fetch(`${API_URL}/login`, {
                 method: 'POST',
@@ -290,21 +300,22 @@ const app = {
                 body: JSON.stringify({ username: usr, password: pwd })
             });
             const data = await res.json();
-
             if (res.ok) {
                 localStorage.setItem('adminToken', data.token);
                 localStorage.setItem('adminUsername', data.username);
                 localStorage.setItem('adminRole', data.role);
-
                 this.checkLoginStatus();
                 this.closeModal('login-modal');
                 await this.fetchGroups();
             } else {
-                document.getElementById('login-error').innerText = data.message || "Incorrect password.";
-                document.getElementById('login-error').classList.remove('hidden');
+                const err = document.getElementById('login-error');
+                if (err) {
+                    err.innerText = data.message || "Password salah.";
+                    err.classList.remove('hidden');
+                }
             }
         } catch (e) {
-            app.showAlert("Error connecting to backend API.");
+            app.showAlert("Gagal terhubung ke API backend.");
         }
     },
 
@@ -322,30 +333,33 @@ const app = {
         state.role = null;
 
         document.body.classList.remove('admin-mode');
-        document.getElementById('admin-login-btn').classList.remove('hidden');
-        document.getElementById('admin-login-btn').innerText = 'Admin Login';
+        const lBtn = document.getElementById('admin-login-btn');
+        if (lBtn) {
+            lBtn.classList.remove('hidden');
+            lBtn.innerText = 'Admin Login';
+        }
 
-        // Hide profile / avatar dropdown
-        document.getElementById('admin-profile-container').classList.add('hidden');
-        document.getElementById('profile-dropdown').classList.add('hidden');
-        document.getElementById('dropdown-view-logs').classList.add('hidden');
+        const pContainer = document.getElementById('admin-profile-container');
+        const pDropdown = document.getElementById('profile-dropdown');
+        const vLogs = document.getElementById('dropdown-view-logs');
+        const sEditor = document.getElementById('score-editor');
+        const lActions = document.getElementById('live-match-actions');
 
-        // Hide score editor controls
-        document.getElementById('score-editor').classList.add('hidden');
-        document.getElementById('live-match-actions').style.display = 'none';
+        if (pContainer) pContainer.classList.add('hidden');
+        if (pDropdown) pDropdown.classList.add('hidden');
+        if (vLogs) vLogs.classList.add('hidden');
+        if (sEditor) sEditor.classList.add('hidden');
+        if (lActions) lActions.style.display = 'none';
 
-        // Reload groups grid and dropdowns
         this.fetchGroups();
     },
 
     async changePassword() {
         const old_password = document.getElementById('old-password').value;
         const new_password = document.getElementById('new-password').value;
-
         if (!old_password || !new_password) {
             return app.showAlert("Semua field harus diisi!");
         }
-
         try {
             const res = await fetch(`${API_URL}/user/password`, {
                 method: 'PUT',
@@ -366,26 +380,25 @@ const app = {
         }
     },
 
-    // --- ADMIN USER CRUD (SUPERADMIN ONLY) ---
     async fetchAdmins() {
         if (state.role !== 'superadmin') return;
         try {
-            const res = await fetch(`${API_URL}/users`, {
-                headers: this.getHeaders()
-            });
+            const res = await fetch(`${API_URL}/users`, { headers: this.getHeaders() });
             const users = await res.json();
             const list = document.getElementById('admin-list');
-            list.innerHTML = users.map(u => `
-                <div class="admin-item" data-username="${u.username.toLowerCase()}" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem; padding:0.5rem; background:rgba(255,255,255,0.05); border-radius:6px;">
-                    <div>
-                        <strong style="color:var(--text-main);">${u.username}</strong>
-                        <span style="font-size:0.8rem; color:var(--text-muted); margin-left:0.5rem;">(${u.role})</span>
+            if (list) {
+                list.innerHTML = users.map(u => `
+                    <div class="admin-item" data-username="${u.username.toLowerCase()}" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem; padding:0.5rem; background:rgba(255,255,255,0.05); border-radius:6px;">
+                        <div>
+                            <strong style="color:var(--text-main);">${u.username}</strong>
+                            <span style="font-size:0.8rem; color:var(--text-muted); margin-left:0.5rem;">(${u.role})</span>
+                        </div>
+                        ${u.username !== state.username ? `
+                            <button class="btn-sm" style="border-color:#ff0055; color:#ff0055; background:transparent;" onclick="app.deleteAdmin('${u._id}')">Delete</button>
+                        ` : '<span style="font-size:0.8rem; color:var(--primary); font-weight:bold;">You</span>'}
                     </div>
-                    ${u.username !== state.username ? `
-                        <button class="btn-sm" style="border-color:#ff0055; color:#ff0055; background:transparent;" onclick="app.deleteAdmin('${u._id}')">Delete</button>
-                    ` : '<span style="font-size:0.8rem; color:var(--primary); font-weight:bold;">You</span>'}
-                </div>
-            `).join('');
+                `).join('');
+            }
         } catch (e) {
             console.error("Gagal mengambil daftar admin", e);
         }
@@ -401,22 +414,16 @@ const app = {
         const items = document.querySelectorAll('.admin-item');
         items.forEach(item => {
             const username = item.getAttribute('data-username') || '';
-            if (username.includes(query)) {
-                item.style.display = 'flex';
-            } else {
-                item.style.display = 'none';
-            }
+            item.style.display = username.includes(query) ? 'flex' : 'none';
         });
     },
 
     async createAdmin() {
         const username = document.getElementById('new-admin-user').value.trim();
         const password = document.getElementById('new-admin-pass').value;
-
         if (!username || !password) {
             return app.showAlert("Username dan password wajib diisi!");
         }
-
         try {
             const res = await fetch(`${API_URL}/users`, {
                 method: 'POST',
@@ -462,7 +469,10 @@ const app = {
             if (data && (data.competitionName || data.competition_name)) {
                 const name = data.competitionName || data.competition_name;
                 state.competitionName = name;
-                document.getElementById('competition-name-display').innerHTML = name.replace(' ', ' <span>') + '</span>';
+                const compDisplay = document.getElementById('competition-name-display');
+                if (compDisplay) {
+                    compDisplay.innerHTML = name.replace(' ', ' <span>') + '</span>';
+                }
             }
         } catch (e) {
             console.error("Could not fetch settings", e);
@@ -471,10 +481,9 @@ const app = {
 
     async saveCompetitionNameInline() {
         const h1 = document.getElementById('competition-name-display');
+        if (!h1) return;
         let name = h1.innerText.trim();
-        if (!name) return;
-
-        if (name === state.competitionName) return; // No change
+        if (!name || name === state.competitionName) return;
 
         try {
             await fetch(`${API_URL}/settings`, {
@@ -489,34 +498,15 @@ const app = {
             } else {
                 h1.innerHTML = name;
             }
-            this.showToast('Nama turnamen berhasil diubah!', 'success');
+            this.showToast('Sukses', 'Nama turnamen berhasil diubah!');
         } catch (e) {
             console.error(e);
-            this.showToast('Gagal mengubah nama turnamen', 'error');
-        }
-    },
-
-    async saveCompetitionName() {
-        const name = document.getElementById('edit-comp-name-input').value;
-        if (name) {
-            try {
-                await fetch(`${API_URL}/settings`, {
-                    method: 'PUT',
-                    headers: this.getHeaders(),
-                    body: JSON.stringify({ competition_name: name })
-                });
-                state.competitionName = name;
-                document.getElementById('competition-name-display').innerHTML = name.replace(' ', ' <span>') + '</span>';
-                this.closeModal('edit-comp-modal');
-            } catch (e) {
-                app.showAlert("Failed to save name");
-            }
+            this.showToast('Error', 'Gagal mengubah nama turnamen');
         }
     },
 
     async fetchGroups() {
         try {
-            // Superadmin can see hidden groups and matches
             const includeHidden = state.role === 'superadmin' ? '?include_hidden=true' : '';
             const res = await fetch(`${API_URL}/groups${includeHidden}`, {
                 headers: this.getHeaders(),
@@ -524,66 +514,57 @@ const app = {
             });
             const data = await res.json();
             state.groups = data;
-
             this.renderGroups();
             this.renderHistory();
-
             if (state.isAdmin) {
                 this.updateGroupSelector();
             }
             this.updateLiveMatchDisplay();
         } catch (e) {
             console.error("Could not fetch groups", e);
-            document.getElementById('groups-grid').innerHTML = '<p class="placeholder-text">Error loading from database. Make sure Python API is running.</p>';
+            const grid = document.getElementById('groups-grid');
+            if (grid) grid.innerHTML = '<p class="placeholder-text">Error loading from database. Make sure Python API is running.</p>';
         }
     },
 
+    // PERBAIKAN UTAMA: Mengirim Array String `teams` sesuai kontrak Backend Flask
     async createGroup() {
-        const name = document.getElementById('new-group-name').value;
+        const name = document.getElementById('new-group-name').value.trim();
         const teamsStr = document.getElementById('new-group-teams').value;
-        if (!name || !teamsStr) return app.showAlert("Please fill all fields");
+        if (!name || !teamsStr) return app.showAlert("Harap isi semua kolom!");
 
-        const teamNames = teamsStr.split(',').map(s => s.trim()).filter(s => s);
-        if (teamNames.length < 2) return app.showAlert("Please provide at least 2 teams");
-
-        const teams = teamNames.map(tName => ({
-            id: Math.random().toString(36).substr(2, 9),
-            name: tName,
-            code: getCountryCode(tName) || ''
-        }));
+        const teams = teamsStr.split(',').map(s => s.trim()).filter(s => s);
+        if (teams.length < 2) return app.showAlert("Harap sediakan minimal 2 tim!");
 
         try {
-            await fetch(`${API_URL}/groups`, {
+            const res = await fetch(`${API_URL}/groups`, {
                 method: 'POST',
                 headers: this.getHeaders(),
                 body: JSON.stringify({ name, teams })
             });
-            this.closeModal('add-group-modal');
-            document.getElementById('new-group-name').value = '';
-            document.getElementById('new-group-teams').value = '';
-            await this.fetchGroups();
+            if (res.ok) {
+                this.closeModal('add-group-modal');
+                document.getElementById('new-group-name').value = '';
+                document.getElementById('new-group-teams').value = '';
+                await this.fetchGroups();
+            } else {
+                const data = await res.json();
+                app.showAlert(data.message || "Gagal membuat grup.");
+            }
         } catch (e) {
-            app.showAlert("Failed to create group");
+            app.showAlert("Gagal membuat grup.");
         }
     },
 
     async deleteGroup(groupId, permanent = false) {
-        const confirmMsg = permanent
-            ? "PERINGATAN: Hapus grup ini secara permanen beserta semua data pertandingannya? Tindakan ini tidak dapat dibatalkan."
-            : "Hapus grup ini? grup bisa dikembalikan lagi oleh superadmin.";
-
+        const confirmMsg = permanent 
+            ? "PERINGATAN: Hapus grup ini secara permanen beserta semua data pertandingannya?" 
+            : "Sembunyikan grup ini?";
         if (!await app.showConfirm(confirmMsg)) return;
 
         try {
-            const url = permanent
-                ? `${API_URL}/groups/${groupId}?permanent=true`
-                : `${API_URL}/groups/${groupId}`;
-
-            const res = await fetch(url, {
-                method: 'DELETE',
-                headers: this.getHeaders()
-            });
-
+            const url = permanent ? `${API_URL}/groups/${groupId}?permanent=true` : `${API_URL}/groups/${groupId}`;
+            const res = await fetch(url, { method: 'DELETE', headers: this.getHeaders() });
             if (res.ok) {
                 await this.fetchGroups();
             } else {
@@ -595,14 +576,13 @@ const app = {
     },
 
     async restoreGroup(groupId) {
-        if (!await app.showConfirm("Tampilkan kembali grup yang disembunyikan?")) return;
+        if (!await app.showConfirm("Tampilkan kembali grup ini?")) return;
         try {
             const res = await fetch(`${API_URL}/groups/${groupId}`, {
                 method: 'PUT',
                 headers: this.getHeaders(),
                 body: JSON.stringify({ isHidden: false })
             });
-
             if (res.ok) {
                 await this.fetchGroups();
             } else {
@@ -618,13 +598,12 @@ const app = {
         if (!group) return;
         document.getElementById('edit-group-id').value = groupId;
         document.getElementById('edit-group-name-input').value = group.name;
-
         const container = document.getElementById('edit-group-teams-container');
         container.innerHTML = group.teams.map(t => `
             <div style="display:flex; gap:0.5rem; margin-bottom:0.5rem; align-items:center;">
                 <input type="hidden" class="edit-team-id" value="${t.id}">
-                <input type="text" class="edit-team-name custom-select" style="flex:2; margin-bottom:0;" value="${t.name}" placeholder="Negara">
-                <input type="text" class="edit-team-code custom-select" style="width:70px; margin-bottom:0;" value="${t.code || ''}" placeholder="Code">
+                <input type="text" class="edit-team-name custom-select" style="flex:2; margin-bottom:0;" value="${t.name}" placeholder="Nama Tim">
+                <input type="text" class="edit-team-code custom-select" style="width:70px; margin-bottom:0;" value="${t.code || ''}" placeholder="Kode">
             </div>
         `).join('');
         this.openModal('edit-group-modal');
@@ -657,7 +636,6 @@ const app = {
         }
     },
 
-    // Check if team is currently playing in a live match
     isTeamLive(teamId) {
         for (let g of state.groups) {
             let liveMatch = g.matches.find(m => m.isLive === true || m.status === 'live');
@@ -669,18 +647,13 @@ const app = {
     },
 
     calculateStandings(group) {
-        let standings = group.teams.map(t => ({
-            ...t, p: 0, w: 0, d: 0, l: 0, gf: 0, ga: 0, gd: 0, pts: 0, form: []
-        }));
-
-        // Filter and sort finished matches chronologically to calculate the correct form history
+        let standings = group.teams.map(t => ({ ...t, p: 0, w: 0, d: 0, l: 0, gf: 0, ga: 0, gd: 0, pts: 0, form: [] }));
         const finishedMatches = group.matches.filter(m => m.isFinished === true || m.status === 'finished');
         finishedMatches.sort((a, b) => (a.playOrder || 0) - (b.playOrder || 0));
 
         finishedMatches.forEach(m => {
             const t1 = standings.find(t => t.id === m.team1.id);
             const t2 = standings.find(t => t.id === m.team2.id);
-
             if (!t1 || !t2) return;
 
             t1.p++; t2.p++;
@@ -688,30 +661,22 @@ const app = {
             t2.gf += m.score2; t2.ga += m.score1;
 
             if (m.score1 > m.score2) {
-                t1.w++; t1.pts += 3;
-                t2.l++;
-                t1.form.push('W');
-                t2.form.push('L');
+                t1.w++; t1.pts += 3; t2.l++;
+                t1.form.push('W'); t2.form.push('L');
             } else if (m.score1 < m.score2) {
-                t2.w++; t2.pts += 3;
-                t1.l++;
-                t1.form.push('L');
-                t2.form.push('W');
+                t2.w++; t2.pts += 3; t1.l++;
+                t1.form.push('L'); t2.form.push('W');
             } else {
-                t1.d++; t1.pts += 1;
-                t2.d++; t2.pts += 1;
-                t1.form.push('D');
-                t2.form.push('D');
+                t1.d++; t1.pts += 1; t2.d++; t2.pts += 1;
+                t1.form.push('D'); t2.form.push('D');
             }
         });
 
         standings.forEach(t => {
             t.gd = t.gf - t.ga;
-            // Keep only the last 5 match results
             t.form = t.form.slice(-5);
         });
 
-        // Auto Sort by Points, then GD, then GF
         standings.sort((a, b) => {
             if (b.pts !== a.pts) return b.pts - a.pts;
             if (b.gd !== a.gd) return b.gd - a.gd;
@@ -722,25 +687,20 @@ const app = {
     },
 
     getFormHtml(formArray) {
-        if (!formArray || formArray.length === 0) {
-            return '<span style="color:var(--text-muted); font-size:0.8rem;">-</span>';
-        }
+        if (!formArray || formArray.length === 0) return '<span style="color:var(--text-muted); font-size:0.8rem;">-</span>';
         return `<div class="form-circles">` + formArray.map(res => {
-            let colorClass = '';
-            if (res === 'W') colorClass = 'form-w';
-            else if (res === 'D') colorClass = 'form-d';
-            else colorClass = 'form-l';
+            let colorClass = res === 'W' ? 'form-w' : res === 'D' ? 'form-d' : 'form-l';
             return `<span class="form-circle ${colorClass}">${res}</span>`;
         }).join('') + `</div>`;
     },
 
     renderGroups() {
         const grid = document.getElementById('groups-grid');
+        if (!grid) return;
         grid.innerHTML = '';
 
         state.groups.forEach(group => {
             const standings = this.calculateStandings(group);
-
             let rowsHtml = standings.map((t, i) => {
                 const liveBadge = this.isTeamLive(t.id) ? `<span class="live-indicator">LIVE</span>` : '';
                 return `
@@ -749,8 +709,7 @@ const app = {
                         <td class="left-align">
                             <div class="team-info">
                                 <img src="${getFlagUrl(t.code)}" alt="${t.name}">
-                                <span>${t.name}</span>
-                                ${liveBadge}
+                                <span>${t.name}</span> ${liveBadge}
                             </div>
                         </td>
                         <td>${t.p}</td>
@@ -773,45 +732,30 @@ const app = {
                 card.style.border = '2px dashed #ff9900';
             }
 
-            let headerActions = '';
-            if (group.isHidden) {
-                headerActions = `
-                    <button class="btn-sm btn-restore" onclick="app.restoreGroup('${group._id}')">Restore</button>
-                    <button class="btn-sm btn-outline" onclick="app.deleteGroup('${group._id}', true)" style="border-color:#ff0055; color:#ff0055;">Delete</button>
-                `;
-            } else {
-                headerActions = `
-                    <button class="btn-sm btn-edit" onclick="app.openEditGroup('${group._id}')">Edit</button>
-                    <button class="btn-sm btn-outline" onclick="app.deleteGroup('${group._id}', false)" style="border-color: #ff0055; color: #ff0055;">Delete</button>
-                `;
-            }
+            let headerActions = group.isHidden ? `
+                <button class="btn-sm btn-restore" onclick="app.restoreGroup('${group._id}')">Restore</button>
+                <button class="btn-sm btn-outline" onclick="app.deleteGroup('${group._id}', true)" style="border-color:#ff0055; color:#ff0055;">Delete</button>
+            ` : `
+                <button class="btn-sm btn-edit" onclick="app.openEditGroup('${group._id}')">Edit</button>
+                <button class="btn-sm btn-outline" onclick="app.deleteGroup('${group._id}', false)" style="border-color: #ff0055; color: #ff0055;">Delete</button>
+            `;
 
             card.innerHTML = `
                 <div class="group-header">
                     <h3>${group.name} ${group.isHidden ? '<span style="background:#ff9900; color:white; padding:0.15rem 0.4rem; border-radius:4px; font-size:0.7rem; font-weight:bold; vertical-align:middle; margin-left:0.5rem;">HIDDEN</span>' : ''}</h3>
-                    <div class="admin-only-flex" style="gap:0.5rem;">
-                        ${headerActions}
-                    </div>
+                    <div class="admin-only-flex" style="gap:0.5rem;">${headerActions}</div>
                 </div>
                 <table class="standings-table">
                     <thead>
                         <tr>
                             <th width="30">#</th>
                             <th class="left-align">TEAM</th>
-                            <th width="30">MP</th>
-                            <th width="30">W</th>
-                            <th width="30">D</th>
-                            <th width="30">L</th>
-                            <th width="30">GM</th>
-                            <th width="30">GK</th>
-                            <th width="40">GD</th>
-                            <th width="40">PTS</th>
-                            <th width="120">FORM (5 LAST)</th>
+                            <th width="30">MP</th><th width="30">W</th><th width="30">D</th><th width="30">L</th>
+                            <th width="30">GM</th><th width="30">GK</th><th width="40">GD</th><th width="40">PTS</th>
+                            <th width="120">FORM</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        ${rowsHtml}
-                    </tbody>
+                    <tbody>${rowsHtml}</tbody>
                 </table>
             `;
             grid.appendChild(card);
@@ -819,25 +763,26 @@ const app = {
     },
 
     updateGroupSelector() {
+        if (!this.tsGroup) return;
         this.tsGroup.clear();
         this.tsGroup.clearOptions();
-
         state.groups.forEach(g => {
-            let text = g.name;
-            if (g.isHidden) text += ' [HIDDEN]';
+            let text = g.name + (g.isHidden ? ' [HIDDEN]' : '');
             this.tsGroup.addOption({ value: g._id, text: text });
         });
-
         this.tsGroup.setValue("");
-
-        document.getElementById('team-selectors').style.display = 'none';
-        document.getElementById('start-match-btn').style.display = 'none';
+        const ts = document.getElementById('team-selectors');
+        const smBtn = document.getElementById('start-match-btn');
+        if (ts) ts.style.display = 'none';
+        if (smBtn) smBtn.style.display = 'none';
     },
 
     onGroupSelected(groupId) {
-        if (!groupId) {
-            document.getElementById('team-selectors').style.display = 'none';
-            document.getElementById('start-match-btn').style.display = 'none';
+        if (!groupId || !this.tsHome || !this.tsAway) {
+            const ts = document.getElementById('team-selectors');
+            const smBtn = document.getElementById('start-match-btn');
+            if (ts) ts.style.display = 'none';
+            if (smBtn) smBtn.style.display = 'none';
             return;
         }
 
@@ -846,7 +791,6 @@ const app = {
 
         this.tsHome.clear();
         this.tsHome.clearOptions();
-
         this.tsAway.clear();
         this.tsAway.clearOptions();
 
@@ -857,7 +801,6 @@ const app = {
 
         this.tsHome.setValue("");
         this.tsAway.setValue("");
-
         document.getElementById('team-selectors').style.display = 'flex';
         document.getElementById('start-match-btn').style.display = 'block';
     },
@@ -881,16 +824,11 @@ const app = {
                 body: JSON.stringify({ groupId, homeTeamId: homeId, awayTeamId: awayId, force })
             });
             const data = await res.json();
-
             if (res.ok) {
                 state.currentGroupId = groupId;
                 state.currentMatchId = data.id || data.matchId;
-
-                // Fetch updated data first, then show live match
                 await this.fetchGroups();
                 this.openLiveScoreEditor(state.currentMatchId);
-
-                // Use non-blocking toast instead of modal alert to avoid blocking UI
                 this.showToast('Match Started', 'Live match berhasil dimulai!');
             } else {
                 app.showAlert(data.message || "Gagal memulai pertandingan.");
@@ -910,18 +848,17 @@ const app = {
                 break;
             }
         }
-
         if (!match) return;
-
         state.currentMatchId = matchId;
 
-        document.getElementById('score-editor').classList.remove('hidden');
-        document.getElementById('live-match-actions').style.display = 'flex';
+        const sEditor = document.getElementById('score-editor');
+        const lActions = document.getElementById('live-match-actions');
+        if (sEditor) sEditor.classList.remove('hidden');
+        if (lActions) lActions.style.display = 'flex';
 
         document.getElementById('edit-t1-name').innerText = match.team1.name;
         document.getElementById('edit-t2-name').innerText = match.team2.name;
 
-        // Only set values if the input does not have active focus
         if (document.activeElement.id !== 'edit-t1-score') {
             document.getElementById('edit-t1-score').value = match.score1;
         }
@@ -936,13 +873,11 @@ const app = {
         let val = parseInt(input.value) + diff;
         if (val < 0) val = 0;
         input.value = val;
-
         this.saveMatchData();
     },
 
     async saveMatchData() {
         if (!state.currentMatchId) return;
-
         const score1 = parseInt(document.getElementById('edit-t1-score').value) || 0;
         const score2 = parseInt(document.getElementById('edit-t2-score').value) || 0;
 
@@ -953,7 +888,6 @@ const app = {
                 body: JSON.stringify({ score1, score2 })
             });
 
-            // Optimistic update locally
             for (let g of state.groups) {
                 let m = g.matches.find(x => x._id === state.currentMatchId);
                 if (m) {
@@ -977,11 +911,9 @@ const app = {
                 body: JSON.stringify({ isFinished: true })
             });
 
-            // Clear editor controls
             document.getElementById('score-editor').classList.add('hidden');
             document.getElementById('live-match-actions').style.display = 'none';
             state.currentMatchId = null;
-
             app.showAlert("Match finished and standings updated!");
             await this.fetchGroups();
         } catch (e) {
@@ -991,30 +923,22 @@ const app = {
 
     async cancelLiveMatch() {
         if (!state.currentMatchId) return;
-        if (!await app.showConfirm("Batalkan pertandingan langsung yang sedang berjalan? Skor akan di-reset ke 0 dan status kembali dijadwalkan.")) return;
+        if (!await app.showConfirm("Batalkan pertandingan langsung yang sedang berjalan?")) return;
 
         try {
             const res = await fetch(`${API_URL}/matches/${state.currentMatchId}/reset`, {
                 method: 'DELETE',
                 headers: this.getHeaders()
             });
-
             if (res.ok) {
                 state.currentMatchId = null;
                 document.getElementById('score-editor').classList.add('hidden');
                 document.getElementById('live-match-actions').style.display = 'none';
-
-                // Immediately clear the live match display UI
+                
                 const container = document.getElementById('live-match-display');
-                if (container) {
-                    container.innerHTML = '<p class="placeholder-text">No match currently playing.</p>';
-                }
+                if (container) container.innerHTML = '<p class="placeholder-text">No match currently playing.</p>';
 
-                // Reset selectors
-                document.getElementById('group-selector').value = '';
-                document.getElementById('team-selectors').style.display = 'none';
-                document.getElementById('start-match-btn').style.display = 'none';
-
+                this.updateGroupSelector();
                 await this.fetchGroups();
             } else {
                 app.showAlert("Gagal membatalkan pertandingan.");
@@ -1026,14 +950,13 @@ const app = {
 
     updateLiveMatchDisplay() {
         const container = document.getElementById('live-match-display');
+        if (!container) return;
 
         let liveMatch = null;
-        let matchGroup = null;
         for (let g of state.groups) {
             let found = g.matches.find(m => m.isLive === true || m.status === 'live');
             if (found) {
                 liveMatch = found;
-                matchGroup = g;
                 break;
             }
         }
@@ -1075,31 +998,21 @@ const app = {
         }
     },
 
-    // --- MATCH HISTORY CONTROLS ---
-
     getAllHistoryMatches() {
         let history = [];
         state.groups.forEach(g => {
             g.matches.forEach(m => {
                 if (m.isFinished === true || m.status === 'finished') {
-                    history.push({
-                        ...m,
-                        groupName: g.name
-                    });
+                    history.push({ ...m, groupName: g.name });
                 }
             });
         });
 
-        // Sorting
         if (state.historySort === 'time') {
-            // Sort by playOrder descending (newest on top)
             history.sort((a, b) => (b.playOrder ?? -1) - (a.playOrder ?? -1));
         } else {
-            // Sort by group name, then playOrder
             history.sort((a, b) => {
-                if (a.groupName !== b.groupName) {
-                    return a.groupName.localeCompare(b.groupName);
-                }
+                if (a.groupName !== b.groupName) return a.groupName.localeCompare(b.groupName);
                 return (b.playOrder ?? -1) - (a.playOrder ?? -1);
             });
         }
@@ -1108,22 +1021,20 @@ const app = {
 
     renderHistory() {
         const container = document.getElementById('history-list');
+        if (!container) return;
         container.innerHTML = '';
 
         const history = this.getAllHistoryMatches();
-
         if (history.length === 0) {
             container.innerHTML = '<p class="placeholder-text">No matches played yet.</p>';
             return;
         }
 
         history.forEach((m, index) => {
-            // Skip hidden matches for non-superadmin
             if (m.isHidden && state.role !== 'superadmin') return;
 
             const item = document.createElement('div');
             item.className = 'history-item' + (m.isHidden ? ' hidden-match' : '');
-
             if (m.isHidden) {
                 item.style.opacity = '0.65';
                 item.style.border = '2px dashed #ff9900';
@@ -1131,13 +1042,11 @@ const app = {
 
             let actionButtons = '';
             if (m.isHidden && state.role === 'superadmin') {
-                // Only superadmin can restore and hard-delete hidden matches
                 actionButtons = `
                     <button class="btn-sm btn-restore" onclick="app.restoreMatch('${m._id}')">Restore</button>
                     <button class="btn-sm btn-outline" onclick="app.deleteMatch('${m._id}', true)" style="border-color:#ff0055; color:#ff0055;">Delete Permanently</button>
                 `;
             } else if (!m.isHidden) {
-                // Normal matches: admin can edit & soft-delete
                 actionButtons = `
                     <button class="btn-sm btn-edit" onclick="app.openEditHistory('${m._id}')">Edit</button>
                     <button class="btn-sm btn-outline" onclick="app.deleteMatch('${m._id}', false)" style="border-color:#ff0055; color:#ff0055;">Delete</button>
@@ -1165,7 +1074,6 @@ const app = {
                 </div>
                 <div class="history-actions ${state.isAdmin ? '' : 'hidden'}">
                     ${actionButtons}
-                    
                     <div class="history-reorder-btns ${state.role === 'superadmin' && !m.isHidden ? '' : 'hidden'}" style="cursor: grab; font-size: 1.2rem; display: flex; align-items: center; justify-content: center; padding: 0 10px; color: var(--text-muted);">
                         <span title="Drag to reorder">☰</span>
                     </div>
@@ -1180,7 +1088,7 @@ const app = {
                     e.dataTransfer.setData('text/plain', index.toString());
                     item.style.opacity = '0.5';
                 });
-                item.addEventListener('dragend', (e) => {
+                item.addEventListener('dragend', () => {
                     item.style.opacity = '';
                     document.querySelectorAll('.history-item').forEach(el => {
                         el.style.borderTop = '';
@@ -1195,43 +1103,28 @@ const app = {
                     e.preventDefault();
                     item.style.borderTop = '2px solid var(--primary)';
                 });
-                item.addEventListener('dragleave', (e) => {
+                item.addEventListener('dragleave', () => {
                     item.style.borderTop = '';
                 });
                 item.addEventListener('drop', (e) => {
                     e.stopPropagation();
                     const fromIndex = parseInt(e.dataTransfer.getData('text/plain'));
-                    const toIndex = index;
-                    if (fromIndex !== toIndex && !isNaN(fromIndex)) {
-                        app.reorderMatchDrag(fromIndex, toIndex);
+                    if (fromIndex !== index && !isNaN(fromIndex)) {
+                        app.reorderMatchDrag(fromIndex, index);
                     }
                     return false;
                 });
             }
         });
-
-        if (state.role === 'superadmin' && state.historySort === 'time') {
-            container.addEventListener('dragover', (e) => {
-                e.preventDefault();
-            });
-            container.addEventListener('drop', (e) => {
-                const fromIndex = parseInt(e.dataTransfer.getData('text/plain'));
-                if (!isNaN(fromIndex)) {
-                    app.reorderMatchDrag(fromIndex, history.length - 1);
-                }
-            });
-        }
     },
 
     async reorderMatchDrag(fromIndex, toIndex) {
         const history = this.getAllHistoryMatches();
         if (fromIndex < 0 || fromIndex >= history.length || toIndex < 0 || toIndex >= history.length) return;
 
-        // Move the element in the array
         const [movedItem] = history.splice(fromIndex, 1);
         history.splice(toIndex, 0, movedItem);
 
-        // Map correctly to _id and reverse to match original order direction
         const orderIds = history.map(m => m._id).reverse();
 
         try {
@@ -1240,7 +1133,6 @@ const app = {
                 headers: this.getHeaders(),
                 body: JSON.stringify({ order: orderIds })
             });
-
             if (res.ok) {
                 await this.fetchGroups();
                 this.showToast('Match History Reordered', 'Urutan berhasil disimpan!');
@@ -1261,7 +1153,6 @@ const app = {
                 break;
             }
         }
-
         if (!match) return;
 
         document.getElementById('edit-history-match-id').value = matchId;
@@ -1284,7 +1175,6 @@ const app = {
                 headers: this.getHeaders(),
                 body: JSON.stringify({ score1, score2 })
             });
-
             if (res.ok) {
                 this.closeModal('edit-history-modal');
                 await this.fetchGroups();
@@ -1297,22 +1187,14 @@ const app = {
     },
 
     async deleteMatch(matchId, permanent = false) {
-        const confirmMsg = permanent
-            ? "PERINGATAN: Hapus hasil pertandingan ini secara permanen? Skor akan kembali 0 dan status kembali dijadwalkan."
-            : "Hapus hasil pertandingan ini? Pertandingan dapat dipulihkan oleh superadmin";
-
+        const confirmMsg = permanent 
+            ? "PERINGATAN: Hapus hasil pertandingan ini secara permanen?" 
+            : "Sembunyikan hasil pertandingan ini?";
         if (!await app.showConfirm(confirmMsg)) return;
 
         try {
-            const url = permanent
-                ? `${API_URL}/matches/${matchId}/reset?permanent=true`
-                : `${API_URL}/matches/${matchId}/reset`;
-
-            const res = await fetch(url, {
-                method: 'DELETE',
-                headers: this.getHeaders()
-            });
-
+            const url = permanent ? `${API_URL}/matches/${matchId}/reset?permanent=true` : `${API_URL}/matches/${matchId}/reset`;
+            const res = await fetch(url, { method: 'DELETE', headers: this.getHeaders() });
             if (res.ok) {
                 await this.fetchGroups();
             } else {
@@ -1324,14 +1206,13 @@ const app = {
     },
 
     async restoreMatch(matchId) {
-        if (!await app.showConfirm("Tampilkan kembali hasil pertandingan yang disembunyikan?")) return;
+        if (!await app.showConfirm("Tampilkan kembali hasil pertandingan ini?")) return;
         try {
             const res = await fetch(`${API_URL}/matches/${matchId}`, {
                 method: 'PUT',
                 headers: this.getHeaders(),
                 body: JSON.stringify({ isHidden: false })
             });
-
             if (res.ok) {
                 await this.fetchGroups();
             } else {
@@ -1349,29 +1230,21 @@ const app = {
 
     async fetchLogs(showNotifications = false) {
         if (!state.isAdmin || state.role !== 'superadmin') return;
-
         try {
-            const res = await fetch(`${API_URL}/logs`, {
-                headers: this.getHeaders()
-            });
+            const res = await fetch(`${API_URL}/logs`, { headers: this.getHeaders() });
             if (res.ok) {
                 const logs = await res.json();
-
                 if (showNotifications && state.logs.length > 0) {
-                    // Check if there are new logs not performed by current user
                     const newLogs = logs.filter(log => {
                         const isNew = !state.logs.some(existing => existing._id === log._id);
                         const isOtherAdmin = log.username !== state.username;
                         return isNew && isOtherAdmin;
                     });
-
-                    // Trigger toast notifications for new actions by other admins
                     newLogs.reverse().forEach(log => {
                         let actionLabel = log.action.replace('_', ' ');
                         this.showToast(log.username, `${actionLabel}: ${log.details}`);
                     });
                 }
-
                 state.logs = logs;
                 this.renderLogs();
             }
@@ -1388,13 +1261,10 @@ const app = {
         const actionFilter = this.tsLogAction ? this.tsLogAction.getValue() : '';
 
         const filtered = state.logs.filter(log => {
-            const matchesSearch =
-                log.username.toLowerCase().includes(searchVal) ||
-                log.action.toLowerCase().includes(searchVal) ||
-                log.details.toLowerCase().includes(searchVal);
-
+            const matchesSearch = log.username.toLowerCase().includes(searchVal) || 
+                                  log.action.toLowerCase().includes(searchVal) || 
+                                  log.details.toLowerCase().includes(searchVal);
             const matchesAction = !actionFilter || log.action === actionFilter;
-
             return matchesSearch && matchesAction;
         });
 
@@ -1444,19 +1314,16 @@ const app = {
         `;
         container.appendChild(toast);
 
-        // Remove toast automatically after 5 seconds
         setTimeout(() => {
             toast.style.animation = 'slideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) reverse forwards';
             setTimeout(() => toast.remove(), 300);
         }, 5000);
     },
 
-    // Real-time synchronization via Server-Sent Events (SSE)
     setupRealtimeUpdates() {
         if (window.eventSource) {
             window.eventSource.close();
         }
-
         const baseUrl = API_URL.replace('/api', '');
         const source = new EventSource(`${baseUrl}/api/events`);
 
